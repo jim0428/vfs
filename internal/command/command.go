@@ -6,7 +6,7 @@ import (
 	"os"
 	"reflect"
 	"strings"
-	commandmanger "test/internal/pkg/command_manger"
+	commandmanger "vfs/internal/pkg/command_manger"
 )
 
 func Run() {
