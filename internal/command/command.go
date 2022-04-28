@@ -10,20 +10,36 @@ import (
 )
 
 func Run() {
-	consoleReader := bufio.NewReader(os.Stdin)
+	//it need to let user know what step need to do
+	//1. Register 2. log in
+	for {
+		consoleReader := bufio.NewReader(os.Stdin)
 
-	command, _ := consoleReader.ReadString('\n')
+		command, _ := consoleReader.ReadString('\n')
 
-	// command looks like this: register jim
-	// TODO command -> tokens = ["register", "jim"]
-	// if tokens[0] == "register" then ...
-	// else if tokens[0] == "create_folder" then ...
-	command_sli := strings.Fields(command)
+		// command looks like this: register jim
+		// TODO command -> tokens = ["register", "jim"]
+		// if tokens[0] == "register" then ...
+		// else if tokens[0] == "create_folder" then ...
+		command_sli := strings.Fields(command)
 
-	fmt.Println(command_sli, len(command_sli), reflect.TypeOf(command_sli))
+		//check the command whether is right first
+		//if right, then get the command in a struct
+		//if wrong, then get the error message
+		//the return array will be like (struct,message)
+		cmd, message := check(command_sli)
 
-	//deal command
-	//I will add chekcer class for the command
-	commandmanger.DealCommand(command_sli)
+		//if message == error then don't go down
+		//if message == exit then end this program
+		if message == "error" {
+			println("error")
+		} else if message == "exit" {
+			break
+		} else {
+			//deal command
+			fmt.Println("test:", cmd, reflect.TypeOf(cmd))
+			commandmanger.DealCommand(cmd, message)
+		}
+	}
 
 }
