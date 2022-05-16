@@ -1,14 +1,14 @@
 package model
 
-type File struct {
+type Data struct {
 	Username    string
 	Folder_id   string
 	Folder_name string
 	Description string
 }
 
-func NewFile(Username string, Folder_id string, Folder_name string, Description string) File {
-	file := File{}
+func NewFile(Username string, Folder_id string, Folder_name string, Description string) Data {
+	file := Data{}
 	file.Username = Username
 	file.Folder_id = Folder_id
 	file.Folder_name = Folder_name

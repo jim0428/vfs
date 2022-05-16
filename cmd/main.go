@@ -5,10 +5,13 @@ import (
 	"os"
 	"strings"
 
+	uDB "vfs/internal/entity"
 	commandmanger "vfs/internal/pkg/command_manger"
 )
 
 func main() {
+	db := uDB.NewUserDB()
+
 	for {
 		consoleReader := bufio.NewReader(os.Stdin)
 
@@ -28,7 +31,7 @@ func main() {
 			break
 		} else {
 			//deal command
-			commandmanger.DealCommand(command_sli, command_sli[0])
+			commandmanger.DealCommand(db, command_sli, command_sli[0])
 		}
 	}
 }
