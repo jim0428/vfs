@@ -37,6 +37,7 @@ func (DB *UserDB) CheckFolder(u string, fn string) bool {
 			return false
 		}
 	}
+
 	return true
 }
 
