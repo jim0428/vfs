@@ -1,7 +1,7 @@
 package commandmanger
 
 import (
-	"fmt"
+	"strings"
 
 	cmd "vfs/internal/command"
 	uDB "vfs/internal/entity"
@@ -19,12 +19,8 @@ func DealCommand(db *uDB.UserDB, command_sli []string, check_type string) {
 	if command == nil {
 		return
 	}
-
-	if check, message := command.Check_command(db, length); check {
-		fmt.Println(message)
+	if check, _ := command.Check_command(db, length); check {
 		command.Execute_command(db)
-	} else {
-		fmt.Println(message)
 	}
 
 	//command.Execute_command()
@@ -35,11 +31,6 @@ func create_command(command_sli []string, check_type string) (cmd.Commandmanger,
 	length := len(command_sli) - 1
 
 	switch check_type {
-	//the Command: command_sli will be replaced by File struct from input
-	// Username    string
-	// Folder_id   string
-	// Folder_name string
-	// Description string
 	case "register":
 		return &cmd.Register{Username: command_sli[1]}, length
 	case "create_folder":
@@ -47,4 +38,28 @@ func create_command(command_sli []string, check_type string) (cmd.Commandmanger,
 	}
 
 	return nil, 0
+}
+
+func Parse(command_sli []string) []string {
+	result := make([]string, 0)
+	tmp := ""
+	link := false
+	for _, data := range command_sli {
+		if strings.Count(data, "'") == 2 {
+			result = append(result, data)
+		} else if link && strings.Contains(data, "'") {
+			tmp += " " + data
+			result = append(result, tmp)
+			link = false
+			tmp = ""
+		} else if link {
+			tmp += " " + data
+		} else if !link && strings.Contains(data, "'") {
+			tmp += data
+			link = true
+		} else if !link {
+			result = append(result, data)
+		}
+	}
+	return result
 }

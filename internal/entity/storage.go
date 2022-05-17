@@ -48,7 +48,7 @@ func (DB *UserDB) AddFolder(u string, fn string, d string) string {
 	folder, folder_id := m.NewFolder(u, fn, d)
 	//According to username, and create a folder struct as folder
 	DB.folder[u] = append(DB.folder[u], folder)
-	fmt.Println("In AddFolder:", DB.folder[u])
+	fmt.Println("In storage's AddFolder:", DB.folder[u])
 	return folder_id
 }
 

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	uDB "vfs/internal/entity"
-	commandmanger "vfs/internal/pkg/command_manger"
+	cm "vfs/internal/pkg/command_manger"
 )
 
 func main() {
@@ -22,6 +22,9 @@ func main() {
 		// command looks like this: register Jim
 		// TODO command -> tokens = ["register", "Jim"]
 		command_sli := strings.Fields(command)
+		//fmt.Println(command_sli, reflect.TypeOf(command_sli), len(command_sli))
+		command_sli = cm.Parse(command_sli)
+		//fmt.Println(command_sli, reflect.TypeOf(command_sli), len(command_sli))
 
 		//if message == exit then end this program
 		if len(command_sli) <= 0 {
@@ -30,7 +33,7 @@ func main() {
 			break
 		} else {
 			//deal command
-			commandmanger.DealCommand(db, command_sli, command_sli[0])
+			cm.DealCommand(db, command_sli, command_sli[0])
 		}
 	}
 }
