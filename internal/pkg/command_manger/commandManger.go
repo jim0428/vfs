@@ -42,7 +42,7 @@ func create_command(command_sli []string, check_type string) (cmd.Commandmanger,
 	case "register":
 		return &cmd.Register{Username: command_sli[1]}, length
 	case "create_folder":
-		return &cmd.Create_folder{Info: m.Data{Username: command_sli[1], Folder_id: "", Folder_name: command_sli[2], Description: command_sli[3]}}, length
+		return &cmd.Create_folder{FData: m.Folder{Username: command_sli[1], Folder_name: command_sli[2], Description: command_sli[3]}}, length
 	}
 
 	return nil, 0

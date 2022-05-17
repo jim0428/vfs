@@ -1,7 +1,7 @@
 package command
 
 import (
-	uDB "vfs/internal/entity"
+	DB "vfs/internal/entity"
 )
 
 //--------------------------------------------
@@ -10,11 +10,11 @@ type Register struct {
 	Username string
 }
 
-func (c *Register) Execute_command(db *uDB.UserDB) {
+func (c *Register) Execute_command(db *DB.UserDB) {
 	db.AddUser(c.Username)
 }
 
-func (c *Register) Check_command(db *uDB.UserDB, length int) (bool, string) {
+func (c *Register) Check_command(db *DB.UserDB, length int) (bool, string) {
 	//check whether the register command have follow the rule
 	//1. check parameter length
 	//2. check exist user
@@ -31,6 +31,5 @@ func (c *Register) Check_command(db *uDB.UserDB, length int) (bool, string) {
 			//already have this user
 			return false, "Error -user already existing"
 		}
-
 	}
 }
