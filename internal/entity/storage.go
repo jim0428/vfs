@@ -57,15 +57,3 @@ func (DB *UserDB) GetFolder(u string) []m.Folder {
 	//need to check folder name
 	return DB.folder[u]
 }
-
-// type User struct {
-// 	username string
-// }
-
-//CRUD
-//Create
-//Read
-//Update
-//Delete
-
-//get set

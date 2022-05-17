@@ -14,10 +14,11 @@ func DealCommand(db *uDB.UserDB, command_sli []string, check_type string) {
 	//I will create many struct in struct
 	//and I will use different struct to implement interface
 	//and I will pass the parameter e.g Register{command_sli}, create_folder{command_sli}
-
-	//m.Execute(command_sli)
-
 	command, length := create_command(command_sli, check_type)
+
+	if command == nil {
+		return
+	}
 
 	if check, message := command.Check_command(db, length); check {
 		fmt.Println(message)

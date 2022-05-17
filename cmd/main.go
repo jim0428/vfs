@@ -13,20 +13,19 @@ func main() {
 	db := uDB.NewUserDB()
 
 	for {
+		//consoleReader := bufio.NewReader(os.Stdin)
 		consoleReader := bufio.NewReader(os.Stdin)
 
 		command, _ := consoleReader.ReadString('\n')
 
-		// command looks like this: register jim
-		// TODO command -> tokens = ["register", "jim"]
-		// if tokens[0] == "register" then ...
-		// else if tokens[0] == "create_folder" then ...
+		command = strings.ToLower(command)
+		// command looks like this: register Jim
+		// TODO command -> tokens = ["register", "Jim"]
 		command_sli := strings.Fields(command)
 
-		//if message == error then don't go down
 		//if message == exit then end this program
-		if command_sli[0] == "error" {
-			println("error")
+		if len(command_sli) <= 0 {
+			continue
 		} else if command_sli[0] == "exit" {
 			break
 		} else {
