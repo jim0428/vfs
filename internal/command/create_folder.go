@@ -7,16 +7,20 @@ import (
 )
 
 type Create_folder struct {
-	FData m.Folder
+	fData m.Folder
+}
+
+func NewCreateFolder(u string, f string, d string) *Create_folder {
+	//u => username, f => foldername, d => description
+	folder, _ := m.NewFolder(u, f, d)
+	return &Create_folder{
+		fData: folder,
+	}
 }
 
 func (c *Create_folder) Execute_command(db *DB.UserDB) {
-	if ok := db.CheckFolder(c.FData.Username, c.FData.Folder_name); ok {
-		resonse := db.AddFolder(c.FData.Username, c.FData.Folder_name, c.FData.Description)
-		fmt.Println(resonse)
-	} else {
-		fmt.Println("Already have this folder")
-	}
+	resonse := db.AddFolder(c.fData)
+	fmt.Println(resonse)
 }
 
 func (c *Create_folder) Check_command(db *DB.UserDB, length int) (bool, string) {
@@ -26,9 +30,14 @@ func (c *Create_folder) Check_command(db *DB.UserDB, length int) (bool, string) 
 		return false, "Have too parameters"
 	} else {
 		//ckeck if have exist user
-		if db.CheckUser(c.FData.Username) {
-			//Check exist folder if not, then Create folder
-			return true, "Have this user"
+		if db.CheckUser(c.fData.Username) {
+			//Check if have exist folder
+			if ok := db.CheckFolder(c.fData.Username, c.fData.Folder_name); ok {
+				return true, "Success"
+			} else {
+				fmt.Println("Already have this folder")
+				return false, "Already have this folder"
+			}
 		} else {
 			//don't have this user
 			fmt.Println("unknown user")

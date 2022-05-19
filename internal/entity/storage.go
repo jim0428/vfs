@@ -1,14 +1,15 @@
 package entity
 
 import (
-	"fmt"
 	m "vfs/internal/model"
 )
 
 //var USER
 type UserDB struct {
+	//
 	username map[string]bool
-	folder   map[string]([]m.Folder)
+	//a => {} b=> {}
+	folder map[string]([]m.Folder)
 }
 
 func NewUserDB() *UserDB {
@@ -41,15 +42,14 @@ func (DB *UserDB) CheckFolder(u string, fn string) bool {
 	return true
 }
 
-func (DB *UserDB) AddFolder(u string, fn string, d string) string {
+func (DB *UserDB) AddFolder(fdata m.Folder) string {
 	//u => username, f => foldername, d => description
 	//other parameters, Create time , folder id will be auto created
 	//so it don't need to pass
-	folder, folder_id := m.NewFolder(u, fn, d)
 	//According to username, and create a folder struct as folder
-	DB.folder[u] = append(DB.folder[u], folder)
-	fmt.Println("In storage's AddFolder:", DB.folder[u])
-	return folder_id
+	DB.folder[fdata.Username] = append(DB.folder[fdata.Username], fdata)
+	//fmt.Println("In storage's AddFolder:", DB.folder[u])
+	return fdata.Folder_id
 }
 
 func (DB *UserDB) GetFolder(u string) []m.Folder {

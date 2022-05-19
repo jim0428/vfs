@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 
+	shlex "github.com/buildkite/shellwords"
+
 	uDB "vfs/internal/entity"
 	cm "vfs/internal/pkg/command_manger"
 )
@@ -13,23 +15,27 @@ func main() {
 	db := uDB.NewUserDB()
 
 	for {
-		//consoleReader := bufio.NewReader(os.Stdin)
-		consoleReader := bufio.NewReader(os.Stdin)
+		//origin version
+		// consoleReader := bufio.NewReader(os.Stdin)
+		// command, _ := consoleReader.ReadString('\n')
 
-		command, _ := consoleReader.ReadString('\n')
+		consoleScanner := bufio.NewScanner(os.Stdin)
 
-		command = strings.ToLower(command)
-		// command looks like this: register Jim
-		// TODO command -> tokens = ["register", "Jim"]
-		command_sli := strings.Fields(command)
-		//fmt.Println(command_sli, reflect.TypeOf(command_sli), len(command_sli))
-		command_sli = cm.Parse(command_sli)
-		//fmt.Println(command_sli, reflect.TypeOf(command_sli), len(command_sli))
+		consoleScanner.Scan()
 
-		//if message == exit then end this program
+		command := consoleScanner.Text()
+		command_sli, _ := shlex.Split(command)
+
+		//only enter then skip
 		if len(command_sli) <= 0 {
 			continue
-		} else if command_sli[0] == "exit" {
+		}
+		command_sli[0] = strings.ToLower(command_sli[0])
+		// command looks like this: register 'Jim' 'TEST 789'
+		// TODO command -> tokens = [register, 'Jim','TEST 789']
+
+		//if message == exit then end this program
+		if command_sli[0] == "exit" {
 			break
 		} else {
 			//deal command

@@ -8,11 +8,17 @@ import (
 //--------------------------------------------
 // Register class
 type Register struct {
-	Username string
+	username string
+}
+
+func NewRegister(name string) *Register {
+	return &Register{
+		username: name,
+	}
 }
 
 func (c *Register) Execute_command(db *DB.UserDB) {
-	db.AddUser(c.Username)
+	db.AddUser(c.username)
 }
 
 func (c *Register) Check_command(db *DB.UserDB, length int) (bool, string) {
@@ -26,7 +32,7 @@ func (c *Register) Check_command(db *DB.UserDB, length int) (bool, string) {
 	} else {
 		//check exist user
 		//Error - user already existing
-		if !(db.CheckUser(c.Username)) {
+		if !(db.CheckUser(c.username)) {
 			//don't have this user
 			fmt.Println("Success")
 			return true, "Success"
