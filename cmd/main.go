@@ -7,12 +7,12 @@ import (
 
 	shlex "github.com/buildkite/shellwords"
 
-	uDB "vfs/internal/entity"
+	DB "vfs/internal/entity"
 	cm "vfs/internal/pkg/command_manger"
 )
 
 func main() {
-	db := uDB.NewUserDB()
+	db := DB.NewUserDB()
 
 	for {
 		//origin version

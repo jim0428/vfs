@@ -15,11 +15,12 @@ func NewGetFolder(name string) *Get_folders {
 	}
 }
 
-func (c *Get_folders) Execute_command(db *DB.UserDB) {
+func (c *Get_folders) Execute_command(db *DB.UserDB) bool {
 	folders := db.GetFolder(c.username)
 	for _, folder := range folders {
 		fmt.Printf("%s|%s|%s|%s|%s\n", folder.Folder_id, folder.Folder_name, folder.Description, folder.Create_time, folder.Username)
 	}
+	return true
 }
 
 func (c *Get_folders) Check_command(db *DB.UserDB, length int) (bool, string) {

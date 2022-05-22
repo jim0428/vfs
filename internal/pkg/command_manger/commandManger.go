@@ -1,15 +1,14 @@
 package commandmanger
 
 import (
-	"strings"
-
+	"fmt"
 	cmd "vfs/internal/command"
-	uDB "vfs/internal/entity"
+	DB "vfs/internal/entity"
 )
 
 //--------------------------------------------
 
-func DealCommand(db *uDB.UserDB, command_sli []string, check_type string) {
+func DealCommand(db *DB.UserDB, command_sli []string, check_type string) {
 	//I will create many struct in struct
 	//and I will use different struct to implement interface
 	//and I will pass the parameter e.g Register{command_sli}, create_folder{command_sli}
@@ -19,7 +18,9 @@ func DealCommand(db *uDB.UserDB, command_sli []string, check_type string) {
 		return
 	}
 	if check, _ := command.Check_command(db, length); check {
-		command.Execute_command(db)
+		if msg := command.Execute_command(db); !msg {
+			fmt.Println("Execute_command occur error")
+		}
 	}
 
 	//command.Execute_command()
@@ -39,30 +40,4 @@ func create_command(command_sli []string, check_type string) (cmd.Commandmanger,
 	}
 
 	return nil, 0
-}
-
-func Parse(command_sli []string) []string {
-	result := make([]string, 0)
-	tmp := ""
-	link := false
-	for _, data := range command_sli {
-		if strings.Count(data, "'") == 2 {
-			data := strings.Trim(data, "'")
-			result = append(result, data)
-		} else if link && strings.Contains(data, "'") {
-			tmp += " " + data
-			tmp := strings.Trim(tmp, "'")
-			result = append(result, tmp)
-			link = false
-			tmp = ""
-		} else if link {
-			tmp += " " + data
-		} else if !link && strings.Contains(data, "'") {
-			tmp += data
-			link = true
-		} else if !link {
-			result = append(result, data)
-		}
-	}
-	return result
 }

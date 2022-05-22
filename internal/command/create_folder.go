@@ -18,13 +18,20 @@ func NewCreateFolder(u string, f string, d string) *Create_folder {
 	}
 }
 
-func (c *Create_folder) Execute_command(db *DB.UserDB) {
-	resonse := db.AddFolder(c.fData)
-	fmt.Println(resonse)
+func (c *Create_folder) Execute_command(db *DB.UserDB) bool {
+	response := db.AddFolder(c.fData)
+	fmt.Println(response)
+
+	for _, data := range db.GetFolder(c.fData.Username) {
+		if response == data.Folder_id {
+			return true
+		}
+	}
+	return false
 }
 
 func (c *Create_folder) Check_command(db *DB.UserDB, length int) (bool, string) {
-	if length > 3 {
+	if length != 3 {
 		//the command is wrong
 		fmt.Println("Have too parameters")
 		return false, "Have too parameters"

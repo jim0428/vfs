@@ -26,8 +26,14 @@ func (DB *UserDB) CheckUser(u string) bool {
 	return false
 }
 
-func (DB *UserDB) AddUser(u string) {
+func (DB *UserDB) AddUser(u string) bool {
+	if _, ok := DB.username[u]; ok {
+		return false
+	}
+
 	DB.username[u] = true
+
+	return true
 }
 
 func (DB *UserDB) CheckFolder(u string, fn string) bool {
