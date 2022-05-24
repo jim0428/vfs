@@ -72,3 +72,19 @@ func (DB *UserDB) RnFolder(u string, nfn string, chg_pos int) bool {
 	}
 	return false
 }
+
+func remove(slice []m.Folder, pos int) []m.Folder {
+	return append(slice[:pos], slice[pos+1:]...)
+}
+
+func (DB *UserDB) DelFolder(u string, pos int, fid string) bool {
+	DB.folder[u] = remove(DB.folder[u], pos)
+
+	for _, data := range DB.folder[u] {
+		if data.Folder_id == fid {
+			return false
+		}
+	}
+
+	return true
+}

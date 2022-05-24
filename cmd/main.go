@@ -27,9 +27,10 @@ func main() {
 		command_sli, _ := shlex.Split(command)
 
 		//only enter then skip
-		if len(command_sli) <= 0 {
+		if len(command_sli) <= 1 {
 			continue
 		}
+
 		command_sli[0] = strings.ToLower(command_sli[0])
 		// command looks like this: register 'Jim' 'TEST 789'
 		// TODO command -> tokens = [register, 'Jim','TEST 789']

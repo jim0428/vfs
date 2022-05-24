@@ -23,7 +23,7 @@ func NewRnFolder(u string, fid string, nfn string) *Rename_folder {
 }
 
 func (rf *Rename_folder) Execute_command(db *DB.UserDB) bool {
-	if rf.chg_pos == -1 {
+	if rf.chg_pos <= -1 {
 		return false
 	}
 	check := db.RnFolder(rf.username, rf.new_folder_name, rf.chg_pos)
