@@ -29,8 +29,8 @@ func (c *Register) Check_command(db *DB.UserDB, length int) (bool, string) {
 	//2. check exist user
 	if length != 1 {
 		//the command is wrong
-		fmt.Println("Have too parameters")
-		return false, "Have too parameters"
+		fmt.Println("Wrong parameters")
+		return false, "Wrong Parameters"
 	} else {
 		//check exist user
 		//Error - user already existing

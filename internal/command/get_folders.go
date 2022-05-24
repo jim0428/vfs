@@ -26,8 +26,8 @@ func (c *Get_folders) Execute_command(db *DB.UserDB) bool {
 func (c *Get_folders) Check_command(db *DB.UserDB, length int) (bool, string) {
 	if length > 1 {
 		//the command is wrong
-		fmt.Println("Have too parameters")
-		return false, "Have too parameters"
+		fmt.Println("Wrong parameters")
+		return false, "Wrong Parameters"
 	} else {
 		//ckeck if have exist user
 		if db.CheckUser(c.username) {

@@ -63,3 +63,12 @@ func (DB *UserDB) GetFolder(u string) []m.Folder {
 	//need to check folder name
 	return DB.folder[u]
 }
+
+func (DB *UserDB) RnFolder(u string, nfn string, chg_pos int) bool {
+	DB.folder[u][chg_pos].Folder_name = nfn
+
+	if DB.folder[u][chg_pos].Folder_name == nfn {
+		return true
+	}
+	return false
+}

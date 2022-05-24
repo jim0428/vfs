@@ -37,6 +37,8 @@ func create_command(command_sli []string, check_type string) (cmd.Commandmanger,
 		return cmd.NewCreateFolder(command_sli[1], command_sli[2], command_sli[3]), length
 	case "get_folders":
 		return cmd.NewGetFolder(command_sli[1]), length
+	case "rename_folder":
+		return cmd.NewRnFolder(command_sli[1], command_sli[2], command_sli[3]), length
 	}
 
 	return nil, 0

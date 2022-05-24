@@ -33,8 +33,8 @@ func (c *Create_folder) Execute_command(db *DB.UserDB) bool {
 func (c *Create_folder) Check_command(db *DB.UserDB, length int) (bool, string) {
 	if length != 3 {
 		//the command is wrong
-		fmt.Println("Have too parameters")
-		return false, "Have too parameters"
+		fmt.Println("Wrong parameters")
+		return false, "Wrong Parameters"
 	} else {
 		//ckeck if have exist user
 		if db.CheckUser(c.fData.Username) {
