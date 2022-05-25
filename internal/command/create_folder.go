@@ -39,7 +39,7 @@ func (c *Create_folder) Check_command(db *DB.UserDB, length int) (bool, string) 
 		//ckeck if have exist user
 		if db.CheckUser(c.fData.Username) {
 			//Check if have exist folder
-			if ok := db.CheckFolder(c.fData.Username, c.fData.Folder_name); ok {
+			if ok := db.CheckFolderByname(c.fData.Username, c.fData.Folder_name); ok {
 				return true, "Success"
 			} else {
 				fmt.Println("Already have this folder")

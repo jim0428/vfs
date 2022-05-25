@@ -38,15 +38,14 @@ func (df *delete_folder) Check_command(db *DB.UserDB, length int) (bool, string)
 		if db.CheckUser(df.username) {
 			//check the folder id,if have this user give the change pos
 			//if not, return false
-			for idx, data := range db.GetFolder(df.username) {
-				if data.Folder_id == df.folder_id {
-					df.del_pos = idx
-					fmt.Println("Success")
-					return true, "Success"
-				}
+			if ok, idx := db.CheckFolderByID(df.username, df.folder_id); ok {
+				df.del_pos = idx
+				fmt.Println("Success")
+				return true, "Success"
+			} else {
+				fmt.Println("Error - folder_id not found")
+				return false, "folder_id not found"
 			}
-			fmt.Println("folder doesn't exist")
-			return false, "folder doesn't exist"
 		} else {
 			//Don't have this user
 			fmt.Println("Error - folder owner not match")

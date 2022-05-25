@@ -9,7 +9,9 @@ type UserDB struct {
 	//
 	username map[string]bool
 	//a => {} b=> {}
+	//folder map[string](map[m.Folder][]m.File) ??
 	folder map[string]([]m.Folder)
+	file   map[string]([]m.File)
 }
 
 func NewUserDB() *UserDB {
@@ -36,9 +38,10 @@ func (DB *UserDB) AddUser(u string) bool {
 	return true
 }
 
-func (DB *UserDB) CheckFolder(u string, fn string) bool {
-	//check
-	//need to interate
+func (DB *UserDB) CheckFolderByname(u string, fn string) bool {
+	//for create_folder use
+	//check, the folder must not have this folder name
+	//because the folder name is unique
 	for _, data := range DB.folder[u] {
 		if data.Folder_name == fn {
 			return false
@@ -46,6 +49,17 @@ func (DB *UserDB) CheckFolder(u string, fn string) bool {
 	}
 
 	return true
+}
+
+func (DB *UserDB) CheckFolderByID(u string, fid string) (int, bool) {
+	//for upload_file use
+	//check,the folder need to exist because the file can be stored in folder
+	for idx, data := range DB.folder[u] {
+		if data.Folder_id == fid {
+			return idx, true
+		}
+	}
+	return -1, false
 }
 
 func (DB *UserDB) AddFolder(fdata m.Folder) string {
@@ -62,6 +76,10 @@ func (DB *UserDB) GetFolder(u string) []m.Folder {
 	//According to username, and create a folder struct as folder
 	//need to check folder name
 	return DB.folder[u]
+}
+
+func (DB *UserDB) GetFile(fid string) []m.File {
+	return DB.file[fid]
 }
 
 func (DB *UserDB) RnFolder(u string, nfn string, chg_pos int) bool {
@@ -87,4 +105,8 @@ func (DB *UserDB) DelFolder(u string, pos int, fid string) bool {
 	}
 
 	return true
+}
+
+func (DB *UserDB) AddFile(fl m.File) {
+	DB.file[fl.Folder_id] = append(DB.file[fl.Folder_id], fl)
 }

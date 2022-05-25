@@ -42,15 +42,14 @@ func (rf *Rename_folder) Check_command(db *DB.UserDB, length int) (bool, string)
 		if db.CheckUser(rf.username) {
 			//check the folder id,if have this user give the change pos
 			//if not, return false
-			for idx, data := range db.GetFolder(rf.username) {
-				if data.Folder_id == rf.folder_id {
-					rf.chg_pos = idx
-					fmt.Println("Success")
-					return true, "Success"
-				}
+			if idx, ok := db.CheckFolderByID(rf.username, rf.folder_id); ok {
+				rf.chg_pos = idx
+				fmt.Println("Success")
+				return true, "Success"
+			} else {
+				fmt.Println("Error - folder_id not found")
+				return false, "folder_id not found"
 			}
-			fmt.Println("Error - folder_id not found")
-			return false, "folder_id not found"
 		} else {
 			//Don't have this user
 			fmt.Println("Error - unknown user")

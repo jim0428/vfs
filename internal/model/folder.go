@@ -15,11 +15,11 @@ type Folder struct {
 }
 
 func NewFolder(Username string, Folder_name string, Description string) (Folder, string) {
-	file := Folder{}
-	file.Username = Username
-	file.Folder_name = Folder_name
-	file.Description = Description
-	file.Folder_id = uuid.New().String()
-	file.Create_time = time.Now()
-	return file, file.Folder_id
+	folder := Folder{}
+	folder.Username = Username
+	folder.Folder_name = Folder_name
+	folder.Description = Description
+	folder.Folder_id = uuid.New().String()
+	folder.Create_time = time.Now()
+	return folder, folder.Folder_id
 }
