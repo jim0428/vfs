@@ -31,7 +31,7 @@ func (ULfile *Upload_file) Check_command(db *DB.UserDB, length int) (bool, strin
 	// “Success” , “Error - folder_id not found” , “Error - unknown user”
 	//The wrong parameters
 	//upload_file {username} {folder_id} {file_name} {description}
-	if length != 3 {
+	if length != 4 {
 		//the command is wrong
 		fmt.Println("Wrong parameters")
 		return false, "Wrong Parameters"

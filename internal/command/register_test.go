@@ -17,6 +17,12 @@ var ckcmdTests = []struct {
 	{"Jim", 0, false},
 	{"Ares", 1, true},
 	{"Michael", 2, false},
+	// //方法1，接近user的input
+	// {"register Jim",true},
+	// {"register Jim abc",false},
+	// {{"Jim","Ares"},"register Jim abc",false},
+	// //方法2，參數本身的檢查
+
 }
 
 var eccmdTests = []struct {

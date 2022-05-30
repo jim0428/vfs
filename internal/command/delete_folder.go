@@ -8,7 +8,8 @@ import (
 type delete_folder struct {
 	username  string
 	folder_id string
-	del_pos   int
+	//where folder at,and need to delete that position
+	del_pos int
 }
 
 func NewDelFolder(u string, fid string) *delete_folder {
@@ -38,7 +39,7 @@ func (df *delete_folder) Check_command(db *DB.UserDB, length int) (bool, string)
 		if db.CheckUser(df.username) {
 			//check the folder id,if have this user give the change pos
 			//if not, return false
-			if ok, idx := db.CheckFolderByID(df.username, df.folder_id); ok {
+			if idx, ok := db.CheckFolderByID(df.username, df.folder_id); ok {
 				df.del_pos = idx
 				fmt.Println("Success")
 				return true, "Success"

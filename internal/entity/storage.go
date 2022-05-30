@@ -10,14 +10,19 @@ type UserDB struct {
 	username map[string]bool
 	//a => {} b=> {}
 	//folder map[string](map[m.Folder][]m.File) ??
+	//key: username, value: folder struct
+	//username => folder
 	folder map[string]([]m.Folder)
-	file   map[string]([]m.File)
+	//key: folded_id, value: file struct
+	//folder_id => file
+	file map[string]([]m.File)
 }
 
 func NewUserDB() *UserDB {
 	return &UserDB{
 		username: map[string]bool{},
 		folder:   map[string]([]m.Folder){},
+		file:     map[string]([]m.File){},
 	}
 }
 
@@ -62,6 +67,15 @@ func (DB *UserDB) CheckFolderByID(u string, fid string) (int, bool) {
 	return -1, false
 }
 
+func (DB *UserDB) CheckFileByName(fid string, fln string) (int, bool) {
+	for idx, data := range DB.file[fid] {
+		if data.Filename == fln {
+			return idx, true
+		}
+	}
+	return -1, false
+}
+
 func (DB *UserDB) AddFolder(fdata m.Folder) string {
 	//u => username, f => foldername, d => description
 	//other parameters, Create time , folder id will be auto created
@@ -91,12 +105,12 @@ func (DB *UserDB) RnFolder(u string, nfn string, chg_pos int) bool {
 	return false
 }
 
-func remove(slice []m.Folder, pos int) []m.Folder {
+func rmFolder(slice []m.Folder, pos int) []m.Folder {
 	return append(slice[:pos], slice[pos+1:]...)
 }
 
 func (DB *UserDB) DelFolder(u string, pos int, fid string) bool {
-	DB.folder[u] = remove(DB.folder[u], pos)
+	DB.folder[u] = rmFolder(DB.folder[u], pos)
 
 	for _, data := range DB.folder[u] {
 		if data.Folder_id == fid {
@@ -107,6 +121,30 @@ func (DB *UserDB) DelFolder(u string, pos int, fid string) bool {
 	return true
 }
 
+func rmFile(slice []m.File, pos int) []m.File {
+	return append(slice[:pos], slice[pos+1:]...)
+}
+
+func (DB *UserDB) DelFile(fid string, pos int, fln string) bool {
+	DB.file[fid] = rmFile(DB.file[fid], pos)
+
+	for _, data := range DB.file[fid] {
+		if data.Filename == fln {
+			return false
+		}
+	}
+
+	return true
+}
+
 func (DB *UserDB) AddFile(fl m.File) {
 	DB.file[fl.Folder_id] = append(DB.file[fl.Folder_id], fl)
+}
+
+func (DB *UserDB) CheckFileisEmpty(fid string) bool {
+	if len(DB.file[fid]) > 0 {
+		return false
+	} else {
+		return true
+	}
 }

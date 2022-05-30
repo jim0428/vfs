@@ -27,18 +27,12 @@ func main() {
 		command_sli, _ := shlex.Split(command)
 
 		//only enter then skip
-		if len(command_sli) <= 1 {
-			continue
-		}
-
-		command_sli[0] = strings.ToLower(command_sli[0])
-		// command looks like this: register 'Jim' 'TEST 789'
-		// TODO command -> tokens = [register, 'Jim','TEST 789']
-
-		//if message == exit then end this program
-		if command_sli[0] == "exit" {
+		if len(command_sli) == 1 && command_sli[0] == "exit" {
 			break
+		} else if len(command_sli) <= 1 {
+			continue
 		} else {
+			command_sli[0] = strings.ToLower(command_sli[0])
 			//deal command
 			cm.DealCommand(db, command_sli, command_sli[0])
 		}
