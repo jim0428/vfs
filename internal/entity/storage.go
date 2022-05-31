@@ -6,10 +6,11 @@ import (
 
 //var USER
 type UserDB struct {
-	//
+	//check user whether exist
+	//a => true
 	username map[string]bool
+	//a user correspond to folder struct
 	//a => {} b=> {}
-	//folder map[string](map[m.Folder][]m.File) ??
 	//key: username, value: folder struct
 	//username => folder
 	folder map[string]([]m.Folder)
@@ -97,6 +98,7 @@ func (DB *UserDB) GetFile(fid string) []m.File {
 }
 
 func (DB *UserDB) RnFolder(u string, nfn string, chg_pos int) bool {
+	//change the folder name depend on "Username" and this username's "change position"
 	DB.folder[u][chg_pos].Folder_name = nfn
 
 	if DB.folder[u][chg_pos].Folder_name == nfn {
@@ -109,32 +111,20 @@ func rmFolder(slice []m.Folder, pos int) []m.Folder {
 	return append(slice[:pos], slice[pos+1:]...)
 }
 
-func (DB *UserDB) DelFolder(u string, pos int, fid string) bool {
+func (DB *UserDB) DelFolder(u string, pos int, fid string) {
 	DB.folder[u] = rmFolder(DB.folder[u], pos)
+}
 
-	for _, data := range DB.folder[u] {
-		if data.Folder_id == fid {
-			return false
-		}
-	}
-
-	return true
+func (DB *UserDB) DelAllFiles(uid string) {
+	delete(DB.file, uid)
 }
 
 func rmFile(slice []m.File, pos int) []m.File {
 	return append(slice[:pos], slice[pos+1:]...)
 }
 
-func (DB *UserDB) DelFile(fid string, pos int, fln string) bool {
+func (DB *UserDB) DelFile(fid string, pos int, fln string) {
 	DB.file[fid] = rmFile(DB.file[fid], pos)
-
-	for _, data := range DB.file[fid] {
-		if data.Filename == fln {
-			return false
-		}
-	}
-
-	return true
 }
 
 func (DB *UserDB) AddFile(fl m.File) {

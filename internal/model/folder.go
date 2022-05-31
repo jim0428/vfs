@@ -20,6 +20,10 @@ func NewFolder(Username string, Folder_name string, Description string) (Folder,
 	folder.Folder_name = Folder_name
 	folder.Description = Description
 	folder.Folder_id = uuid.New().String()
-	folder.Create_time = time.Now()
+
+	timeZone, _ := time.LoadLocation("Asia/Taipei")
+	nowTime, _ := time.ParseInLocation("2006.01.02 15:04:05", time.Now().Format("2006.01.02 15:04:05"), timeZone)
+	folder.Create_time = nowTime
+
 	return folder, folder.Folder_id
 }

@@ -10,10 +10,20 @@ type Upload_file struct {
 	fl m.File
 }
 
-func NewULFile(u string, fid string, fln string, d string) *Upload_file {
-	return &Upload_file{
-		fl: m.NewFile(u, fid, fln, d),
+func NewULFile(command_sli []string) *Upload_file {
+	if len(command_sli) != 5 {
+		return nil
+	} else {
+		u := command_sli[1]
+		fid := command_sli[2]
+		fln := command_sli[3]
+		d := command_sli[4]
+
+		return &Upload_file{
+			fl: m.NewFile(u, fid, fln, d),
+		}
 	}
+
 }
 
 func (ULfile *Upload_file) Execute_command(db *DB.UserDB) bool {
@@ -27,29 +37,25 @@ func (ULfile *Upload_file) Execute_command(db *DB.UserDB) bool {
 	return false
 }
 
-func (ULfile *Upload_file) Check_command(db *DB.UserDB, length int) (bool, string) {
+func (ULfile *Upload_file) Check_command(db *DB.UserDB) (bool, string) {
 	// “Success” , “Error - folder_id not found” , “Error - unknown user”
 	//The wrong parameters
 	//upload_file {username} {folder_id} {file_name} {description}
-	if length != 4 {
-		//the command is wrong
-		fmt.Println("Wrong parameters")
-		return false, "Wrong Parameters"
-	} else {
-		//ckeck if have exist user
-		if db.CheckUser(ULfile.fl.Username) {
-			//Check if have exist folder
-			if _, ok := db.CheckFolderByID(ULfile.fl.Username, ULfile.fl.Folder_id); ok {
-				fmt.Println("Success")
-				return true, "Success"
-			} else {
-				fmt.Println("folder_id not found")
-				return false, "folder_id not found"
-			}
+
+	//ckeck if have exist user
+	if db.CheckUser(ULfile.fl.Username) {
+		//Check if have exist folder
+		if _, ok := db.CheckFolderByID(ULfile.fl.Username, ULfile.fl.Folder_id); ok {
+			fmt.Println("Success")
+			return true, "Success"
 		} else {
-			//don't have this user
-			fmt.Println("unknown user")
-			return false, "unknown user"
+			fmt.Println("folder_id not found")
+			return false, "folder_id not found"
 		}
+	} else {
+		//don't have this user
+		fmt.Println("unknown user")
+		return false, "unknown user"
 	}
+
 }

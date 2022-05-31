@@ -3,8 +3,7 @@ package command
 import DB "vfs/internal/entity"
 
 type Commandmanger interface {
+	//Every command will implement this two functions
 	Execute_command(*DB.UserDB) bool
-	Check_command(*DB.UserDB, int) (bool, string)
+	Check_command(*DB.UserDB) (bool, string)
 }
-
-//func Check_command(length int) string { return "" }

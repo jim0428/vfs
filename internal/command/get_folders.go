@@ -9,9 +9,13 @@ type Get_folders struct {
 	username string
 }
 
-func NewGetFolder(name string) *Get_folders {
-	return &Get_folders{
-		username: name,
+func NewGetFolder(command_sli []string) *Get_folders {
+	if len(command_sli) != 2 {
+		return nil
+	} else {
+		return &Get_folders{
+			username: command_sli[1],
+		}
 	}
 }
 
@@ -23,20 +27,16 @@ func (c *Get_folders) Execute_command(db *DB.UserDB) bool {
 	return true
 }
 
-func (c *Get_folders) Check_command(db *DB.UserDB, length int) (bool, string) {
-	if length > 1 {
-		//the command is wrong
-		fmt.Println("Wrong parameters")
-		return false, "Wrong Parameters"
+func (c *Get_folders) Check_command(db *DB.UserDB) (bool, string) {
+
+	//ckeck if have exist user
+	if db.CheckUser(c.username) {
+		//Check exist folder if not, then Create folder
+		return true, "Have this user"
 	} else {
-		//ckeck if have exist user
-		if db.CheckUser(c.username) {
-			//Check exist folder if not, then Create folder
-			return true, "Have this user"
-		} else {
-			//don't have this user
-			fmt.Println("unknown user")
-			return false, "unknown user"
-		}
+		//don't have this user
+		fmt.Println("unknown user")
+		return false, "unknown user"
 	}
+
 }
