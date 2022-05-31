@@ -31,7 +31,7 @@ func (dfd *Delete_folder) Execute_command(db *DB.UserDB) bool {
 	db.DelFolder(dfd.username, dfd.del_pos, dfd.folder_id)
 	db.DelAllFiles(dfd.folder_id)
 
-	for _, data := range db.GetFolder(dfd.username) {
+	for _, data := range db.GetFolder(dfd.username, "", "") {
 		if data.Folder_id == dfd.folder_id {
 			return false
 		}

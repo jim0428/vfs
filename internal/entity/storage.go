@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"sort"
 	m "vfs/internal/model"
 )
 
@@ -87,14 +88,54 @@ func (DB *UserDB) AddFolder(fdata m.Folder) string {
 	return fdata.Folder_id
 }
 
-func (DB *UserDB) GetFolder(u string) []m.Folder {
+func (DB *UserDB) GetFolder(u string, sortby string, sort_direct string) []m.Folder {
 	//According to username, and create a folder struct as folder
 	//need to check folder name
-	return DB.folder[u]
+	result := make([]m.Folder, len(DB.folder[u]))
+	copy(result, DB.folder[u])
+
+	if sortby == "sort_name" && sort_direct == "asc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Folder_name < result[j].Folder_name
+		})
+	} else if sortby == "sort_name" && sort_direct == "dsc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Folder_name > result[j].Folder_name
+		})
+	} else if sortby == "sort_time" && sort_direct == "asc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Create_time.Before(result[j].Create_time)
+		})
+	} else if sortby == "sort_time" && sort_direct == "dsc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Create_time.After(result[j].Create_time)
+		})
+	}
+	return result
 }
 
-func (DB *UserDB) GetFile(fid string) []m.File {
-	return DB.file[fid]
+func (DB *UserDB) GetFile(fid string, sortby string, sort_direct string) []m.File {
+	result := make([]m.File, len(DB.file[fid]))
+	copy(result, DB.file[fid])
+
+	if sortby == "sort_name" && sort_direct == "asc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Filename < result[j].Filename
+		})
+	} else if sortby == "sort_name" && sort_direct == "dsc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Filename > result[j].Filename
+		})
+	} else if sortby == "sort_time" && sort_direct == "asc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Create_time.Before(result[j].Create_time)
+		})
+	} else if sortby == "sort_time" && sort_direct == "dsc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Create_time.After(result[j].Create_time)
+		})
+	}
+	return result
 }
 
 func (DB *UserDB) RnFolder(u string, nfn string, chg_pos int) bool {

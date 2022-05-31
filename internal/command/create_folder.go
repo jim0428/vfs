@@ -28,7 +28,7 @@ func (c *Create_folder) Execute_command(db *DB.UserDB) bool {
 	response := db.AddFolder(c.fData)
 	fmt.Println(response)
 
-	for _, data := range db.GetFolder(c.fData.Username) {
+	for _, data := range db.GetFolder(c.fData.Username, "", "") {
 		if response == data.Folder_id {
 			return true
 		}

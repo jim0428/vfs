@@ -17,7 +17,9 @@ func DealCommand(db *DB.UserDB, command_sli []string, check_type string) {
 	if command == err {
 		fmt.Println("Error command")
 		return
-	} else if check, _ := command.Check_command(db); check {
+	}
+
+	if check, _ := command.Check_command(db); check {
 		if msg := command.Execute_command(db); !msg {
 			fmt.Println("Execute_command occur error")
 		}

@@ -8,35 +8,44 @@ import (
 type Get_files struct {
 	username       string
 	folder_id      string
-	sort_name      bool
-	sort_time      bool
-	sort_extension bool
-	mode           string
+	sort_extension string
+	sortby         string
+	sort_direct    string
 }
 
 //the default parameters have not finished yet
 //because I don't implement about time sorting part
 func NewGetFiles(command_sli []string) *Get_files {
-	if len(command_sli) != 3 {
-		return nil
-	} else {
-		u := command_sli[1]
-		fid := command_sli[2]
+	length := len(command_sli)
+	u := command_sli[1]
+	fid := command_sli[2]
+
+	if length == 3 { //get_files {username} {folder_id}
+		return &Get_files{
+			username:       u,
+			folder_id:      fid,
+			sort_extension: "",
+			sortby:         "",
+			sort_direct:    "",
+		}
+	} else if length == 5 { //get_files {username} {folder_id} {sort_name|sort_time|sort_extension} {asc|dsc}
+		sortby := command_sli[3]
+		sort_direct := command_sli[4]
 
 		return &Get_files{
 			username:       u,
 			folder_id:      fid,
-			sort_name:      false,
-			sort_time:      false,
-			sort_extension: false,
-			mode:           "",
+			sort_extension: "",
+			sortby:         sortby,
+			sort_direct:    sort_direct,
 		}
 	}
 
+	return nil
 }
 
 func (getfl *Get_files) Execute_command(db *DB.UserDB) bool {
-	fls := db.GetFile(getfl.folder_id)
+	fls := db.GetFile(getfl.folder_id, getfl.sortby, getfl.sort_direct)
 	for _, fl := range fls {
 		fmt.Printf("%s|%s|%s|%s\n", fl.Filename, fl.Description, fl.Create_time, fl.Username)
 	}

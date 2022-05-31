@@ -29,7 +29,7 @@ func NewULFile(command_sli []string) *Upload_file {
 func (ULfile *Upload_file) Execute_command(db *DB.UserDB) bool {
 	db.AddFile(ULfile.fl)
 
-	for _, data := range db.GetFile(ULfile.fl.Folder_id) {
+	for _, data := range db.GetFile(ULfile.fl.Folder_id, "", "") {
 		if ULfile.fl == data {
 			return true
 		}

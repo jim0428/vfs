@@ -39,7 +39,7 @@ func (df *Delete_file) Execute_command(db *DB.UserDB) bool {
 	//Delete the File
 	db.DelFile(df.folder_id, df.del_pos, df.file_name)
 	//check whether delete
-	for _, data := range db.GetFile(df.folder_id) {
+	for _, data := range db.GetFile(df.folder_id, "", "") {
 		if data.Filename == df.file_name {
 			return false
 		}
