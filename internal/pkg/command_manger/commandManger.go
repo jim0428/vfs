@@ -14,8 +14,8 @@ func DealCommand(db *DB.UserDB, command_sli []string, check_type string) {
 	//and I will pass the parameter e.g Register{command_sli}, create_folder{command_sli}
 	command, err := create_command(command_sli, check_type)
 
-	if command == err {
-		fmt.Println("Error command")
+	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
@@ -28,24 +28,24 @@ func DealCommand(db *DB.UserDB, command_sli []string, check_type string) {
 	//command.Execute_command()
 }
 
-func create_command(command_sli []string, check_type string) (cmd.Commandmanger, cmd.Commandmanger) {
+func create_command(command_sli []string, check_type string) (cmd.Commandmanger, error) {
 	switch check_type {
 	case "register":
-		return cmd.NewRegister(command_sli), (*cmd.Register)(nil)
+		return cmd.NewRegister(command_sli)
 	case "create_folder":
-		return cmd.NewCreateFolder(command_sli), (*cmd.Create_folder)(nil)
+		return cmd.NewCreateFolder(command_sli)
 	case "get_folders":
-		return cmd.NewGetFolder(command_sli), (*cmd.Get_folders)(nil)
+		return cmd.NewGetFolder(command_sli)
 	case "rename_folder":
-		return cmd.NewRnFolder(command_sli), (*cmd.Rename_folder)(nil)
+		return cmd.NewRnFolder(command_sli)
 	case "delete_folder":
-		return cmd.NewDelFolder(command_sli), (*cmd.Delete_folder)(nil)
+		return cmd.NewDelFolder(command_sli)
 	case "upload_file":
-		return cmd.NewULFile(command_sli), (*cmd.Upload_file)(nil)
+		return cmd.NewULFile(command_sli)
 	case "get_files":
-		return cmd.NewGetFiles(command_sli), (*cmd.Get_files)(nil)
+		return cmd.NewGetFiles(command_sli)
 	case "delete_file":
-		return cmd.NewDLFile(command_sli), (*cmd.Delete_file)(nil)
+		return cmd.NewDLFile(command_sli)
 	}
 
 	return nil, nil

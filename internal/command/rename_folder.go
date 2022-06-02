@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	DB "vfs/internal/entity"
 )
@@ -14,9 +15,9 @@ type Rename_folder struct {
 
 //priority queue
 //function
-func NewRnFolder(command_sli []string) *Rename_folder {
+func NewRnFolder(command_sli []string) (*Rename_folder, error) {
 	if len(command_sli) != 4 {
-		return nil
+		return nil, errors.New("Command Error!")
 	} else {
 		// u = username, fid = folder_id, nfn = new_folder_name
 		return &Rename_folder{
@@ -24,7 +25,7 @@ func NewRnFolder(command_sli []string) *Rename_folder {
 			folder_id:       command_sli[2],
 			new_folder_name: command_sli[3],
 			chg_pos:         -1,
-		}
+		}, nil
 	}
 
 }

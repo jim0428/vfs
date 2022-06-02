@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	DB "vfs/internal/entity"
 )
@@ -11,28 +12,25 @@ type Get_folders struct {
 	sort_direct string
 }
 
-func NewGetFolder(command_sli []string) *Get_folders {
+func NewGetFolder(command_sli []string) (*Get_folders, error) {
 	length := len(command_sli)
-	u := command_sli[1]
 
 	if length == 2 {
 		return &Get_folders{
-			username:    u,
+			username:    command_sli[1],
 			sort_by:     "",
 			sort_direct: "",
-		}
-	} else if length == 4 {
-		sort_by := command_sli[2]
-		direct := command_sli[3]
+		}, nil
 
+	} else if length == 4 {
 		return &Get_folders{
-			username:    u,
-			sort_by:     sort_by,
-			sort_direct: direct,
-		}
+			username:    command_sli[1],
+			sort_by:     command_sli[2],
+			sort_direct: command_sli[3],
+		}, nil
 	}
 
-	return nil
+	return nil, errors.New("Command Error!")
 }
 
 func (gfd *Get_folders) Execute_command(db *DB.UserDB) bool {

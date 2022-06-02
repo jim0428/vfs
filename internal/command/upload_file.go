@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	DB "vfs/internal/entity"
 	m "vfs/internal/model"
@@ -10,9 +11,9 @@ type Upload_file struct {
 	fl m.File
 }
 
-func NewULFile(command_sli []string) *Upload_file {
+func NewULFile(command_sli []string) (*Upload_file, error) {
 	if len(command_sli) != 5 {
-		return nil
+		return nil, errors.New("Command Error!")
 	} else {
 		u := command_sli[1]
 		fid := command_sli[2]
@@ -21,7 +22,7 @@ func NewULFile(command_sli []string) *Upload_file {
 
 		return &Upload_file{
 			fl: m.NewFile(u, fid, fln, d),
-		}
+		}, nil
 	}
 
 }

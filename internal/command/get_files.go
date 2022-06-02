@@ -1,53 +1,46 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	DB "vfs/internal/entity"
 )
 
 type Get_files struct {
-	username       string
-	folder_id      string
-	sort_extension string
-	sortby         string
-	sort_direct    string
+	username    string
+	folder_id   string
+	sortby      string
+	sort_direct string
 }
 
 //the default parameters have not finished yet
 //because I don't implement about time sorting part
-func NewGetFiles(command_sli []string) *Get_files {
+func NewGetFiles(command_sli []string) (*Get_files, error) {
 	length := len(command_sli)
-	u := command_sli[1]
-	fid := command_sli[2]
 
 	if length == 3 { //get_files {username} {folder_id}
 		return &Get_files{
-			username:       u,
-			folder_id:      fid,
-			sort_extension: "",
-			sortby:         "",
-			sort_direct:    "",
-		}
+			username:    command_sli[1],
+			folder_id:   command_sli[2],
+			sortby:      "",
+			sort_direct: "",
+		}, nil
 	} else if length == 5 { //get_files {username} {folder_id} {sort_name|sort_time|sort_extension} {asc|dsc}
-		sortby := command_sli[3]
-		sort_direct := command_sli[4]
-
 		return &Get_files{
-			username:       u,
-			folder_id:      fid,
-			sort_extension: "",
-			sortby:         sortby,
-			sort_direct:    sort_direct,
-		}
+			username:    command_sli[1],
+			folder_id:   command_sli[2],
+			sortby:      command_sli[3],
+			sort_direct: command_sli[4],
+		}, nil
 	}
 
-	return nil
+	return nil, errors.New("Command Error!")
 }
 
 func (getfl *Get_files) Execute_command(db *DB.UserDB) bool {
 	fls := db.GetFile(getfl.folder_id, getfl.sortby, getfl.sort_direct)
 	for _, fl := range fls {
-		fmt.Printf("%s|%s|%s|%s\n", fl.Filename, fl.Description, fl.Create_time, fl.Username)
+		fmt.Printf("%s|%s|%s|%s|%s\n", fl.Filename, fl.Description, fl.Filename_extension, fl.Create_time, fl.Username)
 	}
 
 	return true

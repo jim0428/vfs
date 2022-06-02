@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 
 	DB "vfs/internal/entity"
@@ -13,20 +14,16 @@ type Delete_file struct {
 	del_pos   int
 }
 
-func NewDLFile(command_sli []string) *Delete_file {
+func NewDLFile(command_sli []string) (*Delete_file, error) {
 	if len(command_sli) != 4 {
-		return nil
+		return nil, errors.New("Command Error!")
 	} else {
-		u := command_sli[1]
-		fid := command_sli[2]
-		fln := command_sli[3]
-
 		return &Delete_file{
-			username:  u,
-			folder_id: fid,
-			file_name: fln,
+			username:  command_sli[1],
+			folder_id: command_sli[2],
+			file_name: command_sli[3],
 			del_pos:   -1,
-		}
+		}, nil
 	}
 }
 

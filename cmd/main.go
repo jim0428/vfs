@@ -27,6 +27,7 @@ func main() {
 		command_sli, _ := shlex.Split(command)
 
 		//only enter then skip
+		//
 		if len(command_sli) == 1 && command_sli[0] == "exit" {
 			break
 		} else if len(command_sli) <= 1 {

@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	DB "vfs/internal/entity"
 )
@@ -12,15 +13,15 @@ type Delete_folder struct {
 	del_pos int
 }
 
-func NewDelFolder(command_sli []string) *Delete_folder {
+func NewDelFolder(command_sli []string) (*Delete_folder, error) {
 	if len(command_sli) != 3 {
-		return nil
+		return nil, errors.New("Command Error!")
 	} else {
 		return &Delete_folder{
 			username:  command_sli[1],
 			folder_id: command_sli[2],
 			del_pos:   -1,
-		}
+		}, nil
 	}
 }
 func (dfd *Delete_folder) Execute_command(db *DB.UserDB) bool {

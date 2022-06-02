@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	DB "vfs/internal/entity"
 	m "vfs/internal/model"
@@ -10,15 +11,15 @@ type Create_folder struct {
 	fData m.Folder
 }
 
-func NewCreateFolder(command_sli []string) *Create_folder {
+func NewCreateFolder(command_sli []string) (*Create_folder, error) {
 	//u => username, f => foldername, d => description
 	if len(command_sli) != 4 {
-		return nil
+		return nil, errors.New("Command Error!")
 	} else {
 		folder, _ := m.NewFolder(command_sli[1], command_sli[2], command_sli[3])
 		return &Create_folder{
 			fData: folder,
-		}
+		}, nil
 	}
 }
 

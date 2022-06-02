@@ -134,7 +134,16 @@ func (DB *UserDB) GetFile(fid string, sortby string, sort_direct string) []m.Fil
 		sort.Slice(result, func(i, j int) bool {
 			return result[i].Create_time.After(result[j].Create_time)
 		})
+	} else if sortby == "sort_extension" && sort_direct == "asc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Filename_extension < result[j].Filename_extension
+		})
+	} else if sortby == "sort_extension" && sort_direct == "dsc" {
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Filename_extension > result[j].Filename_extension
+		})
 	}
+
 	return result
 }
 

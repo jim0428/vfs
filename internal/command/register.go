@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	DB "vfs/internal/entity"
 )
@@ -11,14 +12,14 @@ type Register struct {
 	username string
 }
 
-func NewRegister(command_sli []string) *Register {
+func NewRegister(command_sli []string) (*Register, error) {
 	//fmt.Println(len(command_sli))
 	if len(command_sli) != 2 {
-		return nil
+		return nil, errors.New("Command Error!")
 	} else {
 		return &Register{
 			username: command_sli[1],
-		}
+		}, nil
 	}
 }
 
